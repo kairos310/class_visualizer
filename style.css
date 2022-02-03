@@ -1,0 +1,33 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+	position: absolute;
+	top:0px;
+	left:0px;
+	z-index: -1;
+}
+
+div.course{
+  background:white;
+  padding:2em 1em;
+  border-radius:5em;
+  font-family:sans-serif;
+  user-select:none;
+  cursor:grab;
+}
+div.course:active{
+  cursor:grabbing;
+}
+
+div.course:hover{
+  background: red;
+  z-index:1;
+}
+
+h1{
+	background:white;
+	padding:1em;
+}
