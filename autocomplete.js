@@ -1332,7 +1332,3 @@ function addNode(data, name){
 	divs.push(c)
 	return c;
 }
-
-function display(event){
-	console.log(event)
-}

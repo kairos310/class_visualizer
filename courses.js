@@ -34,65 +34,72 @@ function setup() {
 }
 
 function draw() {
-
   background(52)
   //scale(scl);
+
   for (let d of divs) {
-    d.attract();
-    d.chain();
-    d.avoid();
+    d.attract(); 			//attracts divs to the center of mass
+    d.chain(); 				//moves divs based on links
+    d.avoid();				//avoid each other
   }
   for (let d of divs) {
-    d.update();
-    d.show();
+    d.update();				//update in separate loop to finish calculations before updating
+    d.show();					//display elements
   }
 
-  centerOfGravity()
+  centerOfGravity()		//calculate average position of all, giving center of mass
 }
 
 class Course {
   constructor(x, y, data, name) {
-		this.data = data;
-    this.i = divs.length;
-    this.div = createDiv(name);
-    this.div.class("course");
-		this.div.onmouseover = "display(event)"
+		this.data = data;									//object that holds class information
+    this.i = divs.length;							//current index ##### needs testing
+
+    this.div = createDiv(name);				//creates div with p5
+    this.div.class("course");					//gives it class course for css
+
+		//init physics
     this.pos = createVector(x, y);
     this.vel = createVector(0, 0)
     this.acc = createVector(0, 0);
     this.friction = 0.7
     this.radius = 42;
+		//if mouse is over and dragging it
     this.drag = false;
+		//link lengths
     this.length = 200;
+		//if connected to another div
     this.isConnected = false;
+		//array of connected divs
     this.connected = [];
   }
   update() {
-    this.vel.mult(this.friction)
+		//physics loop
+		this.vel.mult(this.friction)
     this.acc.mult(this.friction);
     if (this.drag) {
       this.pos = createVector(mouseX, mouseY)
     }
     this.vel.add(this.acc);
-    if (this.vel.mag() > 0.2) {
+
+		//dampen small motion, reduce jitter
+		if (this.vel.mag() > 0.2) {
       this.pos.add(this.vel);
     }
+		//reset acceleration
     this.acc.mult(0)
 
   }
   show() {
+		//sets css position of div
     this.div.position((this.pos.x - this.radius) * scl, (this.pos.y - this.radius) * scl);
   }
-  edge(side) {
-    if (side == "x") {
-      let force = createVector(1)
-    } else {
-      this.vel.y *= -1;
-    }
-  }
   avoid() {
+		//loop through all divs
     for (let d of divs) {
+			//get distance from each other
       let dist = this.pos.dist(d.pos);
+			//if meets threshhold force in opposite direction
       if (dist < 300 && dist > 0.0001) {
         let force = p5.Vector.sub(this.pos, d.pos)
         force.setMag(this.radius / dist)
@@ -101,6 +108,7 @@ class Course {
     }
   }
   attract() {
+		//generate force towards center of mass
     let force = p5.Vector.sub(center, this.pos)
     if (this.pos.dist(center) < 0) {
       force.setMag(0);
@@ -110,23 +118,29 @@ class Course {
     this.acc.add(force)
   }
   chain() {
+		//check if connected
     if (this.isConnected) {
+			//for all that its connected to
       for (let d of this.connected) {
+				//calculate target
         let target = p5.Vector.sub(this.pos, d.pos);
         target.setMag(this.length);
         target.add(d.pos)
-        stroke(255, 0, 0)
-
-        line(d.pos.x * scl, d.pos.y * scl, this.pos.x * scl, this.pos.y * scl);
-        ellipse(target.x * scl, target.y * scl, 20 * scl, 20 * scl);
-
+				//spring force
         let force = p5.Vector.sub(target, this.pos);
         force.mult(0.02);
         this.acc.add(force);
+
+				//draw lines
+        stroke(255, 0, 0)
+        line(d.pos.x * scl, d.pos.y * scl, this.pos.x * scl, this.pos.y * scl);
+        ellipse(target.x * scl, target.y * scl, 20 * scl, 20 * scl);
+
       }
     }
   }
   link(d) {
+		//sets connected to true, adds other div to array of connected divs
     d.isConnected = true;
     this.isConnected = true;
 
@@ -134,6 +148,7 @@ class Course {
     d.connected.push(this);
   }
 	populate(){
+		//adds all prerequisite nodes
 		for(let p of this.data.prerequisites){
 			let n = addNode(p, p)
 			this.link(n)
@@ -142,6 +157,7 @@ class Course {
 }
 
 function centerOfGravity() {
+	//get average position
   var average = createVector();
   for (let d of divs) {
     average.add(d.pos);
@@ -150,6 +166,7 @@ function centerOfGravity() {
   center = average;
 }
 
+//get mouse factored in scale, sets drag to true and position matches mouse
 function mousePressed() {
   let m = createVector(mouseX * scl, mouseY * scl);
   for (let d of divs) {
@@ -158,8 +175,6 @@ function mousePressed() {
     }
   }
 }
-
-
 function mouseReleased() {
   let m = createVector(mouseX * scl, mouseY * scl);
   for (let d of divs) {
@@ -169,21 +184,7 @@ function mouseReleased() {
   }
 }
 
-function addConnections() {
-  for (let d of divs) {
-    if (d.connected.length != 0) {
-      for (let i = 0; i < d.connected.length; i++) {
-        d.connected[i] = divs[d.connected[i]];
-      }
-    }
-    d.isConnected = true;
-  }
-}
-
+//scale
 function mouseWheel(event) {
   scl += 0.02 * event.delta;
-}
-
-function initCourses(){
-
 }
