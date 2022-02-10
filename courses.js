@@ -4,10 +4,10 @@ var scl;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight)
-  background(30);
+  background(29);
 
   scl = 1;
-	//
+
   // for (var i = 0; i < 10; i++) {
   //   divs[i] = new Course(random(window.innerWidth), random(window.innerHeight))
   // }
@@ -53,7 +53,7 @@ function draw() {
 }
 
 function windowResized(){
-	
+
 }
 
 class Course {
