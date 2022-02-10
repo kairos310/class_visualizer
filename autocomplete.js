@@ -1328,7 +1328,7 @@ autoCompleteJS.input.addEventListener("selection", function (event) {
 
 
 function addNode(data, name){
-	let c = new Course(mouseX, mouseY, data, name)
+	let c = new Course(random(window.innerWidth),random(window.innerHeight), data, name)
 	divs.push(c)
 	return c;
 }

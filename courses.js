@@ -11,8 +11,23 @@ function setup() {
   // for (var i = 0; i < 10; i++) {
   //   divs[i] = new Course(random(window.innerWidth), random(window.innerHeight))
   // }
+	addNode("/comp/330", "comp 330")
+	addNode("/comp/172", "comp 172")
+	addNode("/comp/241", "comp 241")
+	addNode("/comp/142", "comp 142")
+	addNode("/comp/141", "comp 141")
+	addNode("/comp/231", "comp 231")
 
-  //center = createVector(window.innerWidth / 2, window.innerHeight / 2);
+
+	divs[0].link(divs[1])
+	divs[1].link(divs[4])
+	divs[5].link(divs[4])
+	divs[2].link(divs[3])
+	divs[3].link(divs[4])
+	divs[5].link(divs[0])
+	divs[0].link(divs[3])
+
+  center = createVector(window.innerWidth / 2, window.innerHeight / 2);
   // for (let i = 0; i < divs.length - 1; i++) {
   //   divs[i].link(divs[i + 1])
   // }
