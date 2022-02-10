@@ -12,10 +12,13 @@ canvas {
 
 div.course{
   background:white;
-  padding:2em 1em;
+	width:5em;
+	height:5em;
+	line-height: 5em;
   border-radius:5em;
   font-family:sans-serif;
   user-select:none;
+	text-align: center;
   cursor:grab;
 }
 div.course:active{

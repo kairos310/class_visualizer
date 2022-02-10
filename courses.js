@@ -1,33 +1,33 @@
-console.log(classes["/comp/320"])
-
 var divs = [];
 var center;
 var scl;
-function setup(){
+
+function setup() {
   createCanvas(window.innerWidth, window.innerHeight)
   background(30);
 
   scl = 1;
+	//
+  // for (var i = 0; i < 10; i++) {
+  //   divs[i] = new Course(random(window.innerWidth), random(window.innerHeight))
+  // }
 
-  divs[0] = new Course(0, random(window.innerWidth), random(window.innerHeight), [1])
-  for(var i = 1; i < 10; i++){
-    divs[i] = new Course(i, random(window.innerWidth), random(window.innerHeight), [i - 1, i + 1])
-  }
-  divs[10] = new Course(10, 200,200, [9]);
-  addConnections();
-  center = createVector(window.innerWidth/2, window.innerHeight/2);
+  //center = createVector(window.innerWidth / 2, window.innerHeight / 2);
+  // for (let i = 0; i < divs.length - 1; i++) {
+  //   divs[i].link(divs[i + 1])
+  // }
 }
 
-function draw(){
+function draw() {
 
   background(52)
   //scale(scl);
-  for(let d of divs){
-    //d.attract();
+  for (let d of divs) {
+    d.attract();
     d.chain();
     d.avoid();
   }
-  for(let d of divs){
+  for (let d of divs) {
     d.update();
     d.show();
   }
@@ -35,112 +35,129 @@ function draw(){
   centerOfGravity()
 }
 
-class Course{
-  constructor(i,x,y,d){
-    this.i = i;
-    this.div = createDiv("course");
-		this.div.class("course");
-    this.pos = createVector(x,y);
-    this.vel = createVector(0,0)
-    this.acc = createVector(0,0);
+class Course {
+  constructor(x, y, data, name) {
+		this.data = data;
+    this.i = divs.length;
+    this.div = createDiv(name);
+    this.div.class("course");
+		this.div.onmouseover = "display(event)"
+    this.pos = createVector(x, y);
+    this.vel = createVector(0, 0)
+    this.acc = createVector(0, 0);
     this.friction = 0.7
     this.radius = 42;
     this.drag = false;
     this.length = 200;
     this.isConnected = false;
-    this.connected = d;
+    this.connected = [];
   }
-  update(){
+  update() {
     this.vel.mult(this.friction)
     this.acc.mult(this.friction);
-    if(this.drag){
+    if (this.drag) {
       this.pos = createVector(mouseX, mouseY)
     }
     this.vel.add(this.acc);
-    if(this.vel.mag() > 0.2){
+    if (this.vel.mag() > 0.2) {
       this.pos.add(this.vel);
     }
     this.acc.mult(0)
 
   }
-  show(){
-    this.div.position((this.pos.x - this.radius), (this.pos.y - this.radius));
-
+  show() {
+    this.div.position((this.pos.x - this.radius) * scl, (this.pos.y - this.radius) * scl);
   }
-  edge(side){
-    if(side == "x"){
+  edge(side) {
+    if (side == "x") {
       let force = createVector(1)
-    }else{
+    } else {
       this.vel.y *= -1;
     }
   }
-  avoid(){
-    for(let d of divs){
+  avoid() {
+    for (let d of divs) {
       let dist = this.pos.dist(d.pos);
-      if(dist < 300 && dist > 0.0001){
+      if (dist < 300 && dist > 0.0001) {
         let force = p5.Vector.sub(this.pos, d.pos)
-        force.setMag(this.radius/dist)
+        force.setMag(this.radius / dist)
         this.acc.add(force);
       }
     }
   }
-  attract(){
+  attract() {
     let force = p5.Vector.sub(center, this.pos)
-    if(this.pos.dist(center) < 0){
+    if (this.pos.dist(center) < 0) {
       force.setMag(0);
     }
     force.mult(this.pos.dist(center))
     force.mult(0.00001)
     this.acc.add(force)
   }
-  chain(){
-    if(this.isConnected){
-      for(let d of this.connected){
-        let target = p5.Vector.sub(this.pos,d.pos);
+  chain() {
+    if (this.isConnected) {
+      for (let d of this.connected) {
+        let target = p5.Vector.sub(this.pos, d.pos);
         target.setMag(this.length);
         target.add(d.pos)
-        stroke(255,0,0)
-        line(d.pos.x, d.pos.y, this.pos.x, this.pos.y);
-        ellipse(target.x, target.y, 20,20);
+        stroke(255, 0, 0)
+
+        line(d.pos.x * scl, d.pos.y * scl, this.pos.x * scl, this.pos.y * scl);
+        ellipse(target.x * scl, target.y * scl, 20 * scl, 20 * scl);
+
         let force = p5.Vector.sub(target, this.pos);
-        force.mult(0.01);
+        force.mult(0.02);
         this.acc.add(force);
       }
     }
   }
+  link(d) {
+    d.isConnected = true;
+    this.isConnected = true;
+
+    this.connected.push(d);
+    d.connected.push(this);
+  }
+	populate(){
+		for(let p of this.data.prerequisites){
+			let n = addNode(p, p)
+			this.link(n)
+		}
+	}
 }
 
-function centerOfGravity(){
+function centerOfGravity() {
   var average = createVector();
-  for(let d of divs){
+  for (let d of divs) {
     average.add(d.pos);
   }
-  average.mult(1/divs.length);
+  average.mult(1 / divs.length);
   center = average;
 }
 
-function mousePressed(){
-  let m = createVector(mouseX,mouseY);
-  for(let d of divs){
-    if(d.pos.dist(m) < d.radius){
+function mousePressed() {
+  let m = createVector(mouseX * scl, mouseY * scl);
+  for (let d of divs) {
+    if (d.pos.dist(m) < d.radius) {
       d.drag = true;
     }
   }
 }
 
-function mouseReleased(){
-  let m = createVector(mouseX,mouseY);
-  for(let d of divs){
-    if(d.pos.dist(m) < d.radius){
+
+function mouseReleased() {
+  let m = createVector(mouseX * scl, mouseY * scl);
+  for (let d of divs) {
+    if (d.pos.dist(m) < d.radius) {
       d.drag = false;
     }
   }
 }
 
-function addConnections(){
-  for(let d of divs){
-    if(d.connected.length != 0){
-      for(let i = 0; i < d.connected.length; i++){
+function addConnections() {
+  for (let d of divs) {
+    if (d.connected.length != 0) {
+      for (let i = 0; i < d.connected.length; i++) {
         d.connected[i] = divs[d.connected[i]];
       }
     }
@@ -148,7 +165,10 @@ function addConnections(){
   }
 }
 
-function mouseWheel(event){
+function mouseWheel(event) {
   scl += 0.02 * event.delta;
+}
+
+function initCourses(){
 
 }

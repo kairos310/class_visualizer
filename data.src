@@ -1,0 +1,11 @@
+{
+    placeHolder: "Search for Food...",
+    data: {
+        src: ["Sauce - Thousand Island", "Wild Boar - Tenderloin", "Goat - Whole Cut"]
+    },
+    resultItem: {
+        highlight: {
+            render: true
+        }
+    }
+}
