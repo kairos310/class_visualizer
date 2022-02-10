@@ -20,6 +20,7 @@ div.course{
   user-select:none;
 	text-align: center;
   cursor:grab;
+	z-index:0;
 }
 div.course:active{
   cursor:grabbing;
@@ -27,10 +28,19 @@ div.course:active{
 
 div.course:hover{
   background: red;
-  z-index:1;
+  z-index:2;
 }
 
 h1{
 	background:white;
 	padding:1em;
+}
+
+#description{
+	position:absolute;
+	background:white;
+	width:30vw;
+	padding:2em;
+	display:none;
+	z-index: 1;
 }

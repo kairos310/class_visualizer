@@ -1323,12 +1323,6 @@ autoCompleteJS.input.addEventListener("selection", function (event) {
 	const output = "/" + selection.replace(/\s/gi, "/")
 	console.log(output)
   console.log(classes[output]);
-	addNode(classes[output], selection);
+	addNode(classes[output], output);
+
 });
-
-
-function addNode(data, name){
-	let c = new Course(random(window.innerWidth),random(window.innerHeight), data, name)
-	divs.push(c)
-	return c;
-}

@@ -11,12 +11,13 @@ function setup() {
   // for (var i = 0; i < 10; i++) {
   //   divs[i] = new Course(random(window.innerWidth), random(window.innerHeight))
   // }
-	addNode("/comp/330", "comp 330")
-	addNode("/comp/172", "comp 172")
-	addNode("/comp/241", "comp 241")
-	addNode("/comp/142", "comp 142")
-	addNode("/comp/141", "comp 141")
-	addNode("/comp/231", "comp 231")
+	/*
+	addNode(classes["/comp/330"], "/comp/330")
+	addNode(classes["/comp/172"], "/comp/172")
+	addNode(classes["/comp/241"], "/comp/241")
+	addNode(classes["/comp/142"], "/comp/142")
+	addNode(classes["/comp/141"], "/comp/141")
+	addNode(classes["/comp/231"], "/comp/231")
 
 
 	divs[0].link(divs[1])
@@ -25,7 +26,7 @@ function setup() {
 	divs[2].link(divs[3])
 	divs[3].link(divs[4])
 	divs[5].link(divs[0])
-	divs[0].link(divs[3])
+	divs[0].link(divs[3])*/
 
   center = createVector(window.innerWidth / 2, window.innerHeight / 2);
   // for (let i = 0; i < divs.length - 1; i++) {
@@ -55,8 +56,11 @@ class Course {
 		this.data = data;									//object that holds class information
     this.i = divs.length;							//current index ##### needs testing
 
-    this.div = createDiv(name);				//creates div with p5
+		this.name = name;
+    this.div = createDiv(name.replaceAll("/", " "));				//creates div with p5
     this.div.class("course");					//gives it class course for css
+		this.div.mouseOver(description);
+		//this.div.mouseOut(hide);
 
 		//init physics
     this.pos = createVector(x, y);
@@ -150,8 +154,14 @@ class Course {
 	populate(){
 		//adds all prerequisite nodes
 		for(let p of this.data.prerequisites){
-			let n = addNode(p, p)
-			this.link(n)
+			for(let d of divs){
+				if(p != d.name){
+					let n = addNode(classes[p], p)
+					this.link(n)
+				}else{
+					this.link(d)
+				}
+			}
 		}
 	}
 }
@@ -185,6 +195,41 @@ function mouseReleased() {
 }
 
 //scale
+/*
 function mouseWheel(event) {
   scl += 0.02 * event.delta;
+}*/
+
+function description(event){
+	let d = document.getElementById('description');
+	d.style.display = "block";
+	let selection = event.target.innerText;
+	let output = "/" + selection.replace(/\s/gi, "/");
+	d.innerHTML = classes[output].course +"<br><br>" + classes[output].description + "<br><br> Semester: <br>" + classes[output].semester ;
+	console.log(classes[output])
+}
+
+function hide(){
+	let d = document.getElementById('description');
+	d.style.display = "none";
+}
+
+
+function addNode(data, name){
+	let added = false;
+	let existingNode;
+	for(let d of divs){
+		if(d.name == name){
+			added = true;
+			existingNode = d;
+		}
+	}
+	if(!added){
+		let c = new Course(random(window.innerWidth),random(window.innerHeight), data, name)
+		divs.push(c)
+		c.populate()
+		return c;
+	}else{
+		return existingNode;
+	}
 }
