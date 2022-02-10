@@ -47,8 +47,13 @@ function draw() {
     d.update();				//update in separate loop to finish calculations before updating
     d.show();					//display elements
   }
+	if(divs.length > 0){
+  	centerOfGravity()	//calculate average position of all, giving center of mass
+	}
+}
 
-  centerOfGravity()		//calculate average position of all, giving center of mass
+function windowResized(){
+	
 }
 
 class Course {
@@ -71,7 +76,7 @@ class Course {
 		//if mouse is over and dragging it
     this.drag = false;
 		//link lengths
-    this.length = 200;
+    this.length = 300;
 		//if connected to another div
     this.isConnected = false;
 		//array of connected divs
@@ -104,9 +109,10 @@ class Course {
 			//get distance from each other
       let dist = this.pos.dist(d.pos);
 			//if meets threshhold force in opposite direction
-      if (dist < 300 && dist > 0.0001) {
+      if (dist < this.length && dist > 0.0001) {
         let force = p5.Vector.sub(this.pos, d.pos)
-        force.setMag(this.radius / dist)
+        force.setMag(this.radius / dist);
+				force.mult(2);
         this.acc.add(force);
       }
     }
@@ -132,7 +138,7 @@ class Course {
         target.add(d.pos)
 				//spring force
         let force = p5.Vector.sub(target, this.pos);
-        force.mult(0.02);
+        force.mult(0.005);
         this.acc.add(force);
 
 				//draw lines
@@ -150,6 +156,7 @@ class Course {
 
     this.connected.push(d);
     d.connected.push(this);
+
   }
 	populate(){
 		//adds all prerequisite nodes
@@ -205,7 +212,7 @@ function description(event){
 	d.style.display = "block";
 	let selection = event.target.innerText;
 	let output = "/" + selection.replace(/\s/gi, "/");
-	d.innerHTML = classes[output].course +"<br><br>" + classes[output].description + "<br><br> Semester: <br>" + classes[output].semester ;
+	d.innerHTML = classes[output].course +"<br><br>" + classes[output].description + "<br><br> Semester: <br>" + classes[output].semester.toString() ;
 	console.log(classes[output])
 }
 
@@ -225,7 +232,7 @@ function addNode(data, name){
 		}
 	}
 	if(!added){
-		let c = new Course(random(window.innerWidth),random(window.innerHeight), data, name)
+		let c = new Course(random(200) + window.innerWidth/2 - 100, random(200) + window.innerHeight/2 - 100, data, name)
 		divs.push(c)
 		c.populate()
 		return c;

@@ -1284,6 +1284,11 @@ const autoCompleteJS = new autoComplete({
     ],
     cache: true,
   },
+	resultsList: {
+    noResults: true,
+		maxResults: 50,
+    tabSelect: true
+  },
   resultItem: {
     highlight: true
   },

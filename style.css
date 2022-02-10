@@ -1,3 +1,10 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+	font-family: Be Vietnam Pro;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -9,14 +16,23 @@ canvas {
 	left:0px;
 	z-index: -1;
 }
-
+div.search{
+	margin:2em;
+	border-radius: 8px;
+	background: white;
+	padding: 2em;
+	width:32em;
+}
+h2{
+	font-weight: normal;	
+}
 div.course{
   background:white;
 	width:5em;
 	height:5em;
-	line-height: 5em;
+	display: grid;
+	align-items: center;
   border-radius:5em;
-  font-family:sans-serif;
   user-select:none;
 	text-align: center;
   cursor:grab;
@@ -27,20 +43,18 @@ div.course:active{
 }
 
 div.course:hover{
-  background: red;
+  background: #aaaaee;
+	filter: drop-shadow(0px,0px,5px,#ffffff);
   z-index:2;
 }
 
-h1{
-	background:white;
-	padding:1em;
-}
-
-#description{
+div#description{
 	position:absolute;
 	background:white;
-	width:30vw;
+	width:30em;
 	padding:2em;
 	display:none;
 	z-index: 1;
+	border-radius: 8px;
+	margin:0em 2em 2em 2em;
 }
