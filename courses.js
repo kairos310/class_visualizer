@@ -251,8 +251,10 @@ function description(event){
 	d.innerHTML = classes[output].course +"<br><br>" + classes[output].description + "<br><br> Semester: <br>" + classes[output].semester.toString() + "<br><br>";
 	var temp = document.getElementsByTagName("template")[0];
   var clon = temp.content.cloneNode(true);
-  d.appendChild(clon);
 	curr = event.target.id;
+  d.appendChild(clon);
+
+	document.querySelector("#description > label > input[type=checkbox]").checked = divs[curr].taken;
 }
 
 function hide(){
