@@ -1,6 +1,7 @@
 var divs = [];
 var center;
 var scl;
+var curr;
 
 function setup() {
   createCanvas(window.innerWidth, window.innerHeight)
@@ -64,6 +65,7 @@ class Course {
 		this.name = name;
     this.div = createDiv(name.replaceAll("/", " "));				//creates div with p5
     this.div.class("course");					//gives it class course for css
+		this.div.id(this.i)
 		this.div.mouseOver(description);
 		//this.div.mouseOut(hide);
 
@@ -89,7 +91,6 @@ class Course {
 			this.div.elt.style.color = "var(--light)"
 		}else if(this.data.semester.includes(",")){
 			this.div.elt.style.background = "var(--both)"
-			console.log("both");
 		}else if(this.data.semester.includes("Spring")){
 			this.div.elt.style.background = "var(--spring)"
 		}else if(this.data.semester.includes("Fall")){
@@ -193,6 +194,19 @@ class Course {
 			}
 		}
 	}
+	checkTaken(){
+
+		if(this.taken){
+			this.div.elt.style.background = "var(--blue)"
+			this.div.elt.style.color = "var(--light)"
+		}else if(this.data.semester.includes(",")){
+			this.div.elt.style.background = "var(--both)"
+		}else if(this.data.semester.includes("Spring")){
+			this.div.elt.style.background = "var(--spring)"
+		}else if(this.data.semester.includes("Fall")){
+			this.div.elt.style.background = "var(--fall)"
+		}
+	}
 }
 
 function centerOfGravity() {
@@ -238,6 +252,7 @@ function description(event){
 	var temp = document.getElementsByTagName("template")[0];
   var clon = temp.content.cloneNode(true);
   d.appendChild(clon);
+	curr = event.target.id;
 }
 
 function hide(){
@@ -281,6 +296,6 @@ function drawArrow(base, vec, myColor) {
 }
 
 function toggle(event){
-	console.log(event.target.checked);
-	
+	divs[curr].taken = event.target.checked
+	divs[curr].checkTaken();
 }
