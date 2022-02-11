@@ -11,18 +11,27 @@
 </head>
 
 <body>
-	<div class = "search">
-		<h1>
-			Rhodes Catalog Graph View
-		</h1>
-		<h2>
-			<i>Choose your classes<i>
-		</h2>
-		<form id="course">
-			<input id="autoComplete">
-		</form>
+	<div class="parent">
+		<div class = "search">
+			<img src="Logo.png">
+			<h1>
+				Rhodes Catalog Graph View
+			</h1>
+			<h2>
+				<i>Choose your classes<i>
+			</h2>
+			<form id="course">
+				<input id="autoComplete">
+			</form>
+		</div>
+		<div id="description"></div>
+		<template>
+			<label class="container">Taken
+			  <input type="checkbox" onclick="toggle(event)">
+			  <span class="checkmark"></span>
+			</label>
+		</template>
 	</div>
-	<div id="description"></div>
 	<script src="https://cdn.jsdelivr.net/npm/@tarekraafat/autocomplete.js@10.2.6/dist/autoComplete.min.js"></script>
 	<script src="autocomplete.js"></script>
 	<script src="courses.js"></script>

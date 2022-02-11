@@ -53,7 +53,7 @@ function draw() {
 }
 
 function windowResized(){
-
+	resizeCanvas(windowWidth, windowHeight);
 }
 
 class Course {
@@ -76,11 +76,25 @@ class Course {
 		//if mouse is over and dragging it
     this.drag = false;
 		//link lengths
-    this.length = 300;
+    this.length = 200;
 		//if connected to another div
     this.isConnected = false;
 		//array of connected divs
     this.connected = [];
+		this.prerequisites = [];
+		this.taken = false;
+
+		if(this.taken){
+			this.div.elt.style.background = "var(--blue)"
+			this.div.elt.style.color = "var(--light)"
+		}else if(this.data.semester.includes(",")){
+			this.div.elt.style.background = "var(--both)"
+			console.log("both");
+		}else if(this.data.semester.includes("Spring")){
+			this.div.elt.style.background = "var(--spring)"
+		}else if(this.data.semester.includes("Fall")){
+			this.div.elt.style.background = "var(--fall)"
+		}
   }
   update() {
 		//physics loop
@@ -92,7 +106,7 @@ class Course {
     this.vel.add(this.acc);
 
 		//dampen small motion, reduce jitter
-		if (this.vel.mag() > 0.2) {
+		if (this.vel.mag() > 0.3) {
       this.pos.add(this.vel);
     }
 		//reset acceleration
@@ -102,6 +116,11 @@ class Course {
   show() {
 		//sets css position of div
     this.div.position((this.pos.x - this.radius) * scl, (this.pos.y - this.radius) * scl);
+		if(this.isConnected){
+			for(let p of this.prerequisites){
+				drawArrow(p.pos, p5.Vector.sub(this.pos, p.pos), color(87, 115, 153))
+			}
+		}
   }
   avoid() {
 		//loop through all divs
@@ -112,7 +131,7 @@ class Course {
       if (dist < this.length && dist > 0.0001) {
         let force = p5.Vector.sub(this.pos, d.pos)
         force.setMag(this.radius / dist);
-				force.mult(2);
+				force.mult(1);
         this.acc.add(force);
       }
     }
@@ -142,9 +161,11 @@ class Course {
         this.acc.add(force);
 
 				//draw lines
-        stroke(255, 0, 0)
+				/*
+				drawArrow(this.pos, d.pos, color(255,255,0))
         line(d.pos.x * scl, d.pos.y * scl, this.pos.x * scl, this.pos.y * scl);
         ellipse(target.x * scl, target.y * scl, 20 * scl, 20 * scl);
+				*/
 
       }
     }
@@ -156,6 +177,7 @@ class Course {
 
     this.connected.push(d);
     d.connected.push(this);
+		this.prerequisites.push(d);
 
   }
 	populate(){
@@ -212,8 +234,10 @@ function description(event){
 	d.style.display = "block";
 	let selection = event.target.innerText;
 	let output = "/" + selection.replace(/\s/gi, "/");
-	d.innerHTML = classes[output].course +"<br><br>" + classes[output].description + "<br><br> Semester: <br>" + classes[output].semester.toString() ;
-	console.log(classes[output])
+	d.innerHTML = classes[output].course +"<br><br>" + classes[output].description + "<br><br> Semester: <br>" + classes[output].semester.toString() + "<br><br>";
+	var temp = document.getElementsByTagName("template")[0];
+  var clon = temp.content.cloneNode(true);
+  d.appendChild(clon);
 }
 
 function hide(){
@@ -239,4 +263,24 @@ function addNode(data, name){
 	}else{
 		return existingNode;
 	}
+}
+
+function drawArrow(base, vec, myColor) {
+	push();
+		stroke(myColor);
+		strokeWeight(3);
+		fill(myColor);
+		translate(base.x, base.y);
+		vec.mult(0.7);
+		line(0, 0, vec.x, vec.y);
+		rotate(vec.heading());
+		let arrowSize = 7;
+		translate(vec.mag() - arrowSize, 0);
+		triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);
+	pop();
+}
+
+function toggle(event){
+	console.log(event.target.checked);
+	
 }
