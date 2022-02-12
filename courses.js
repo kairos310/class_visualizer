@@ -91,10 +91,13 @@ class Course {
 			this.div.elt.style.color = "var(--light)"
 		}else if(this.data.semester.includes(",")){
 			this.div.elt.style.background = "var(--both)"
+			this.div.elt.style.color = "var(--dark)"
 		}else if(this.data.semester.includes("Spring")){
 			this.div.elt.style.background = "var(--spring)"
+			this.div.elt.style.color = "var(--dark)"
 		}else if(this.data.semester.includes("Fall")){
 			this.div.elt.style.background = "var(--fall)"
+			this.div.elt.style.color = "var(--dark)"
 		}
   }
   update() {
@@ -201,10 +204,13 @@ class Course {
 			this.div.elt.style.color = "var(--light)"
 		}else if(this.data.semester.includes(",")){
 			this.div.elt.style.background = "var(--both)"
+			this.div.elt.style.color = "var(--dark)"
 		}else if(this.data.semester.includes("Spring")){
 			this.div.elt.style.background = "var(--spring)"
+			this.div.elt.style.color = "var(--dark)"
 		}else if(this.data.semester.includes("Fall")){
 			this.div.elt.style.background = "var(--fall)"
+			this.div.elt.style.color = "var(--dark)"
 		}
 	}
 }
