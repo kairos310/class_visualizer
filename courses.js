@@ -40,7 +40,7 @@ function draw() {
   //scale(scl);
 
   for (let d of divs) {
-    d.attract(); 			//attracts divs to the center of mass
+    //d.attract(); 			//attracts divs to the center of mass
     d.chain(); 				//moves divs based on links
     d.avoid();				//avoid each other
   }
