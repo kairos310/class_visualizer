@@ -86,8 +86,13 @@ class Course {
 		this.prerequisites = [];
 		this.taken = false;
 
+
+
 		if(this.taken){
 			this.div.elt.style.background = "var(--blue)"
+			this.div.elt.style.color = "var(--light)"
+		}else if(this.data.description.includes("offered")){
+			this.div.elt.style.background = "var(--rare)"
 			this.div.elt.style.color = "var(--light)"
 		}else if(this.data.semester.includes(",")){
 			this.div.elt.style.background = "var(--both)"
@@ -102,6 +107,7 @@ class Course {
 			this.div.elt.style.background = "var(--summer)"
 			this.div.elt.style.color = "var(--dark)"
 		}
+
   }
   update() {
 		//physics loop
@@ -204,6 +210,9 @@ class Course {
 
 		if(this.taken){
 			this.div.elt.style.background = "var(--blue)"
+			this.div.elt.style.color = "var(--light)"
+		}else if(this.data.description.includes("offered")){
+			this.div.elt.style.background = "var(--rare)"
 			this.div.elt.style.color = "var(--light)"
 		}else if(this.data.semester.includes(",")){
 			this.div.elt.style.background = "var(--both)"

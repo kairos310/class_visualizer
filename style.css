@@ -11,10 +11,13 @@
   --light: #f7f7ffff;
   --red: #fe5f55ff;
   --green: #79E8BBff;
+
   --spring: linear-gradient(135deg, var(--green) 0%, #b3f2d9 100%);
   --fall: linear-gradient(135deg, var(--red) 0%, #ffa59e 100%);
 	--summer:linear-gradient(135deg, hsla(45, 100%, 72%, 1) 0%, hsla(29, 95%, 58%, 1) 100%);
   --both: linear-gradient(315deg, hsla(18, 76%, 85%, 1) 0%, hsla(203, 69%, 84%, 1) 100%);
+
+	--rare:linear-gradient(135deg, hsla(171, 87%, 67%, 1) 0%, hsla(236, 100%, 72%, 1) 100%);
 }
 
 * {
