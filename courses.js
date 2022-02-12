@@ -66,7 +66,7 @@ class Course {
     this.div = createDiv(name.replaceAll("/", " "));				//creates div with p5
     this.div.class("course");					//gives it class course for css
 		this.div.id(this.i)
-		this.div.mouseOver(description);
+		this.div.mouseClicked(description);
 		//this.div.mouseOut(hide);
 
 		//init physics
@@ -97,6 +97,9 @@ class Course {
 			this.div.elt.style.color = "var(--dark)"
 		}else if(this.data.semester.includes("Fall")){
 			this.div.elt.style.background = "var(--fall)"
+			this.div.elt.style.color = "var(--dark)"
+		}else if(this.data.semester.includes("Summer")){
+			this.div.elt.style.background = "var(--summer)"
 			this.div.elt.style.color = "var(--dark)"
 		}
   }
@@ -207,9 +210,12 @@ class Course {
 			this.div.elt.style.color = "var(--dark)"
 		}else if(this.data.semester.includes("Spring")){
 			this.div.elt.style.background = "var(--spring)"
-			this.div.elt.style.color = "var(--dark)"
+			this.div.elt.style.color = "var(--light)"
 		}else if(this.data.semester.includes("Fall")){
 			this.div.elt.style.background = "var(--fall)"
+			this.div.elt.style.color = "var(--light)"
+		}else if(this.data.semester.includes("Summer")){
+			this.div.elt.style.background = "var(--summer)"
 			this.div.elt.style.color = "var(--dark)"
 		}
 	}
