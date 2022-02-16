@@ -102,7 +102,7 @@ class Course {
 			this.div.elt.style.color = "var(--dark)"
 		}else if(this.data.semester.includes("Fall")){
 			this.div.elt.style.background = "var(--fall)"
-			this.div.elt.style.color = "var(--dark)"
+			this.div.elt.style.color = "var(--light)"
 		}else if(this.data.semester.includes("Summer")){
 			this.div.elt.style.background = "var(--summer)"
 			this.div.elt.style.color = "var(--dark)"
